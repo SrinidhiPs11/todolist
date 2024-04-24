@@ -99,6 +99,7 @@ app.post("/", function (req, res) {
           res.redirect("/" + listName);
         })
     }
+    
   } else {
     if (listName === "Today") {
       res.redirect("/");
