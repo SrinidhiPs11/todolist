@@ -9,8 +9,8 @@ const _ = require("lodash");
 
 app.set('view engine', 'ejs');
 
+app.use(express.static(path.join(__dirname,'public')));
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static("public"));
 
 mongoose.connect("mongodb://127.0.0.1:27017/todolistdb", { useNewURLParser: true });
 
@@ -28,7 +28,7 @@ const item2 = new Item({
 });
 
 const item3 = new Item({
-  name: "<== Hit this to delete an item"
+  name: "Click the Checkbox to delete an item"
 });
 
 const defaultItems = [item1, item2, item3];
@@ -40,8 +40,7 @@ const listSchema = {
 
 const List = mongoose.model("List", listSchema);
 
-app.get("/", function (req, res) {
-
+app.get("/",async function (req, res) {
   Item.find({}).then(function (foundItems) {
     if (foundItems.length === 0) {
       Item.insertMany(defaultItems)
@@ -54,11 +53,11 @@ app.get("/", function (req, res) {
   })
 });
 
+
 app.get("/:customListname", function (req, res) {
   const customListName = _.capitalize(req.params.customListname);
-
   List.findOne({ name: customListName })
-    .then((function (foundlist) {
+  .then((function (foundlist) {
       if (!foundlist) {
         //create new lists
         const list = new List({
@@ -70,7 +69,7 @@ app.get("/:customListname", function (req, res) {
         res.redirect("/" + customListName)
       } else {
         //show existing list
-        res.render("list", { listTitle: foundlist.name, newListItems: foundlist.items });
+        res.render("list", { listTitle: foundlist.name, newListItems: foundlist.items});
       }
     }))
     .catch((err) => { console.error(err); });
@@ -78,7 +77,6 @@ app.get("/:customListname", function (req, res) {
 
 
 });
-
 
 app.post("/", function (req, res) {
 
@@ -130,18 +128,12 @@ app.post("/delete", function (req, res) {
 }
 );
 
-
-
-app.get("/about", function (req, res) {
-  res.render("about");
-});
-
 //render a not found page 
 app.use((req, res) => {
   const notFoundPagePath = path.join(__dirname, 'public/error_page', 'not_found.html');
   res.status(404).sendFile(notFoundPagePath);
 });
 
-app.listen(process.env.PORT || 3000, function () {
-  console.log("Server started on port 3000");
+app.listen(process.env.PORT || 5000, function () {
+  console.log("Server started on port 5000");
 });

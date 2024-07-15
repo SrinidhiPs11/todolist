@@ -4,7 +4,9 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "Nodemon app.js",
+    "build-css": "npx tailwindcss -i ./src/input.css -o ./public/css/output.css --watch"
   },
   "author": "",
   "license": "ISC",
@@ -13,6 +15,10 @@
     "ejs": "^3.1.9",
     "express": "^4.16.3",
     "lodash": "^4.17.21",
-    "mongoose": "^7.3.1"
+    "mongoose": "^7.3.1",
+    "nodemon": "^3.1.4"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.4"
   }
 }

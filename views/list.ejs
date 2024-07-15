@@ -1,29 +1,64 @@
-<%- include("header") -%>
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="-8" />
+    <title>To Do List</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/output.css" />
+  </head>
+  <body class="bg-zinc-100 h-screen">
+    <div
+      class="text-stone-100 text-3xl font-bold flex justify-center pt-[100px]"
+    >
+      <h1
+        class="flex justify-center font-bold p-4 bg-neutral-700 rounded-xl shadow-2xl"
+      >
+        <%= listTitle %>
+      </h1>
+    </div>
+    <div class="flex justify-center m-5 max-sm:m-10">
+      <div
+        class="flex justify-center flex-col max-w-[400px] p-10 text-base bg-stone-100 rounded-xl shadow-2xl"
+      >
+        <% newListItems.forEach(function(item) { %>
+        <form action="/delete" method="post">
+          <div
+            class="max-w-full text-wrap border-b-2 rounded-l-xl border-stone-500 p-2 flex px-2 m-2"
+          >
+            <input
+              type="checkbox"
+              name="checkbox"
+              value="<%= item._id %>"
+              onchange="this.form.submit()"
+            />
+            <p class="checked:line-through m-2"><%= item.name %></p>
+          </div>
+          <input type="hidden" name="listName" value="<%= listTitle %>" />
+        </form>
+        <% }); %>
 
-  <div class="box" id="heading">
-    <h1> <%= listTitle %> </h1>
-  </div>
-
-  <div class="box">
-
-    <% newListItems.forEach(function(item){ %>
-      <form action="/delete" method="post">
-      <div class="item">
-        <input type="checkbox" name="checkbox" value="<%= item._id %>" onchange="this.form.submit()">
-        <p><%= item.name %></p>
+        <form
+          class="flex justify-between border-stone-500 mt-5"
+          action="/"
+          method="post"
+        >
+          <input
+            type="text"
+            name="newItem"
+            placeholder="New Item"
+            autocomplete="off"
+            class="rounded-xl border-stone-500 p-2 flex flex-row m-2 border focus:outline-none focus:ring-2 focus:ring-orange-600 focus:border-transparent"
+          />
+          <button
+            class="flex justify-center items-center rounded-xl font-bold bg-orange-600 text-stone-100 text-xl px-5 m-2 hover:scale-105 duration-300"
+            type="submit"
+            name="list"
+            value="<%= listTitle %>"
+          >
+            +
+          </button>
+        </form>
       </div>
-      <input type="hidden" name="listName" value="<%= listTitle %>"></input>
-    </form>
-      <% }); %>
-
-      <form class="item" action="/" method="post">
-        <input type="text" name="newItem" placeholder="New Item" autocomplete="off">
-        <button type="submit" name="list" value="<%= listTitle %>">+</button>
-      </form>
-  </div>
-
-</body>
-
-
-
+    </div>
+  </body>
 </html>
